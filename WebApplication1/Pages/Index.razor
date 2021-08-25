@@ -1,0 +1,43 @@
+﻿@page "/"
+@using System.Threading
+@using System.Collections.Generic
+@using ClassLibrary1
+
+
+
+<h1>Hello, world!!!!</h1>@(monMessage)
+Welcome to your new app.
+
+
+@* avant d'intégrer question en tant qu'objet, il y avait : questionTxt="@(qcm[numeroQuestion].ToString())" definedAnswer="@definedAnswer"*@
+
+@for (int i = 0; i < 10; i++)
+{
+    <SurveyPrompt Title="@(Calculer(i))" />
+}
+
+@code{
+    string monMessage;
+    Timer timer;
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            timer = new Timer(async (state) =>
+            {
+                monMessage = DateTime.Now.ToString("HH:mm:ss");
+                await InvokeAsync(StateHasChanged);
+            }, null, 0, 1000);
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    public string Calculer(int i)
+    {
+        var tmp = new ClassLibrary1.Buisness();
+        return tmp.CalculBusiness(i);
+    }
+
+}
+

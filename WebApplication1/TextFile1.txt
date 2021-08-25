@@ -1,0 +1,4 @@
+﻿Quel est la hauteur de la tour effeil ?|150m|200m|300m|3
+Combien font 5 fois 6?|10|20|30|40|3
+Quel est le code départemental du Nord ?|59|60|61|62|1
+Quel langage utilise-t-on dans Blazor?|JavaScript|Java|Python|C#|4

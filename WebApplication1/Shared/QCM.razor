@@ -1,0 +1,165 @@
+﻿
+@using ClassLibrary1
+@using System.ComponentModel.DataAnnotations;
+
+<h1>Mon premier QCM</h1>
+
+@*Affichage de QCM*@
+@if (numeroQuestion < qcm.Count)
+{
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: @affichage;" aria-valuenow="@affichage" aria-valuemin="0" aria-valuemax="100">@affichage</div>
+    </div>
+    <p>
+        Vous avez répondu @numeroQuestion question(s) sur @qcm.Count
+    </p>
+
+    <h4 class="my-4">@((MarkupString)qcm[numeroQuestion].ToString())</h4>
+
+    <label>Entrez votre reponse en chiffre</label>
+    <br />
+    @if (btnValider == false)
+    {
+        <input type="number"
+               min="1"
+               max="@(qcm[numeroQuestion].elements.Count - 2)"
+               @bind="@answer" />
+
+        // Affichage du bouton Valider une fois la réponse est saisie
+        @if (answer != null)
+        {
+            <button class="btn btn-primary"
+                    type="submit"
+                    @onclick="CheckAnswer"
+                    id="btn1">
+                Valider
+            </button>
+        }
+    }
+
+    // Affichange du bouton Suivant une fois la réponse est validée
+    @if (btnValider)
+    {
+        <button class="btn btn-secondary"
+                type="submit"
+                @onclick="(() => { Next(); Affichage(); })">
+            Suivant
+        </button>
+    }
+
+    // Affichage du résutat de cette question
+    @((MarkupString)result)
+}
+
+@*Affichange de la dernière page Résultat final*@
+@if (numeroQuestion == qcm.Count)
+{
+    <h3>Vous avez <strong>@totalNbResponses</strong> bonne(s) réponse(s) !</h3>
+}
+
+@code {
+    void Reponse(bool r)
+    {
+        numeroQuestion++;
+    }
+
+    public Question question { get; set; }
+
+    private string inputAnswer;
+    private string answer;
+    //public EventCallback<bool> Reponse { get; set; }
+    public string result { get; set; }
+
+    public int totalNbQuestions = 0;
+    public int totalNbResponses = 0;
+    [Parameter]
+    public int total { get; set; }
+    public string affichage = "0";
+    [Parameter]
+    public string fileName { get; set; }
+
+    //string questoinTxt;
+    int numeroQuestion = 0;
+    List<Question> qcm;
+    //string definedAnswer;
+    int totalQuestion;
+    bool btnValider = false;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        string line;
+        qcm = new List<Question>();
+        //lire le fichier
+        System.IO.StreamReader file = new System.IO.StreamReader(fileName);
+        //C: \Users\Libre\source\repos\StageAyane\WebApplication1\WebApplication1\TextFile.txt
+        while ((line = file.ReadLine()) != null)
+        {
+            if (line.Contains("|"))
+            {
+                string[] newLine = line.Split('|');
+                Question q = new Question();
+                q.elements = new List<string>(newLine);
+                qcm.Add(q);
+                totalQuestion = qcm.Count;
+            }
+        }
+
+        //foreach (var q in qcm)
+        //{
+        //    questoinTxt = q.ToString();
+        //    definedAnswer = q.elements[q.elements.Count - 1];
+        //}
+    }
+
+    public string Question()
+    {
+        var tmp = new ClassLibrary1.Question();
+        return tmp.ToString();
+    }
+
+    private void CheckAnswer()
+    {
+        question = qcm[numeroQuestion];
+        inputAnswer = $"{answer}";
+
+        if (inputAnswer == question.elements[question.elements.Count - 1]) // Length
+        {
+            totalNbQuestions++;
+            result = "<h5 class=\"text-success\"> Bravo ! Votre réponse est correcte</h5>";
+            totalNbResponses++;
+        }
+        else
+        {
+            totalNbQuestions++;
+            result = $" <h5 class=\"text-danger\">Dommage, votre réponse n'est pas correcte, la bonne réponse est <strong> {question.elements[question.elements.Count - 1]}</strong></h5>";
+        }
+
+        //Rendre le bouton "Suivant" visible
+        btnValider = true;
+        answer = null;
+    }
+
+    private void Next()
+    {
+        numeroQuestion++;
+        answer = null;
+        result = null;
+        btnValider = false;
+    }
+
+    public void Affichage()
+    {
+        @if (numeroQuestion == 0)
+        {
+            affichage = "0";
+        }
+        else
+        {
+            double aff = Convert.ToInt32((double)100 * ((double)numeroQuestion / (double)(qcm.Count)));
+            affichage = string.Format("{0}%", aff);
+        }
+    }
+
+}
