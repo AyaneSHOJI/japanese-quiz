@@ -1,54 +1,11 @@
-﻿@page "/QCM"
+﻿@page "/QCM2"
 @using ClassLibrary1
 
-<QCM Reponse="(r) => Reponse(r)" question="@qcm[numeroQuestion]" total="@totalQuestion" />
 
-@code {
-    void Reponse(bool r)
-    {
-        numeroQuestion++;
-    }
+<QCM fileName="@fileName1"></QCM>
 
-  
-    //string questoinTxt;
-    int numeroQuestion = 0;
-    List<Question> qcm;
-    //string definedAnswer;
-    int totalQuestion;
+@code{
+   
+    public string fileName1 = @"C:\Users\Libre\source\repos\japanese-quiz\WebApplication1\TextFile1.txt";
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-
-        string line;
-        qcm = new List<Question>();
-
-        //lire le fichier
-        System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Libre\source\repos\StageAyane\WebApplication1\WebApplication1\TextFile.txt");
-
-        while ((line = file.ReadLine()) != null)
-        {
-            if (line.Contains("|"))
-            {
-                string[] newLine = line.Split('|');
-                Question q = new Question();
-                q.elements = new List<string>(newLine);
-                qcm.Add(q);
-                totalQuestion = qcm.Count;
-
-            }
-        }
-
-        //foreach (var q in qcm)
-        //{
-        //    questoinTxt = q.ToString();
-        //    definedAnswer = q.elements[q.elements.Count - 1];
-        //}
-    }
-
-    public string Question()
-    {
-        var tmp = new ClassLibrary1.Question();
-        return tmp.ToString();
-    }
 }

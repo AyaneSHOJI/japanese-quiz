@@ -1,4 +1,3 @@
-﻿Quel est la hauteur de la tour effeil ?|150m|200m|300m|3
-Combien font 5 fois 6?|10|20|30|40|3
-Quel est le code départemental du Nord ?|59|60|61|62|1
-Quel langage utilise-t-on dans Blazor?|JavaScript|Java|Python|C#|4
+﻿"Bonjour" |"Konbanwa"|"Oyasumi"|"Konnichiwa"|3
+"Merci"|"Arigatou"|"Douitashimashite"|"Oishii"|1
+"Au revoir"|"Sayounara"|"Mata ashita"|"Ohayou"|1

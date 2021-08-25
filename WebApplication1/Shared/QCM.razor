@@ -93,7 +93,6 @@
         qcm = new List<Question>();
         //lire le fichier
         System.IO.StreamReader file = new System.IO.StreamReader(fileName);
-        //C: \Users\Libre\source\repos\StageAyane\WebApplication1\WebApplication1\TextFile.txt
         while ((line = file.ReadLine()) != null)
         {
             if (line.Contains("|"))
@@ -105,12 +104,6 @@
                 totalQuestion = qcm.Count;
             }
         }
-
-        //foreach (var q in qcm)
-        //{
-        //    questoinTxt = q.ToString();
-        //    definedAnswer = q.elements[q.elements.Count - 1];
-        //}
     }
 
     public string Question()
